@@ -31,6 +31,7 @@ $(document).ready(function () {
 
 var haveBIM360Hub = false;
 var previousUrn = 0;
+var urlStringParam;
 
 function prepareDataManagementTree() {
   $('#dataManagementHubs').jstree({
@@ -95,7 +96,7 @@ function prepareDataManagementTree() {
     },
     "plugins": 
       ["types", "state", "sort"]
-  }).bind("activate_node.jstree", function (evt, data) {
+  }).bind("activate_node.jstree", function (evt, data, item) {
     if (!data || !data.node) return;
     if (data.node.type == 'items')
       data.node = $('#dataManagementHubs').jstree(true).get_node(data.node.children[0]);
@@ -106,11 +107,15 @@ function prepareDataManagementTree() {
       var urn = data.node.id;
       var filename = $('#dataManagementHubs').jstree(true).get_node(data.node.parent).text;
       var fileType = data.node.original.fileType;
-
+      /*urlString*/
+      urlStringParam = data.node.original.fileName; 
       if (fileType == null || urn == null || previousUrn == urn) return;
       launchViewer(urn, filename, fileType);
       previousUrn = urn;
       $.notify("loading... " + filename, { className: "info", position:"bottom right" });
     }
   });;
+}
+function urlString(){
+    return urlStringParam;
 }

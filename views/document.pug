@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    div(class='panel-group' )        
+        div(class='panel panel-default')
+            div(class='panel panel-heading')
+                p #[i(class='fa fa-book fa-2x col-sm-2', aria-hidden='true')]
+                    h4  #[b ItemName] 
+            div(class='panel panel-body')
+                ul
+                    li  #[i(class='fa fa-user-o fa-1x', aria-hidden='true')] Document was created by
+                    li  #[i(class='fa fa-refresh fa-1x', aria-hidden='true')] Document update
+                    li  #[i(class='fa fa-user-circle-o fa-1x', aria-hidden='true')] Document was modified by 
+                

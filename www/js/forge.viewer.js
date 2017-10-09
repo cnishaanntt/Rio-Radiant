@@ -1,4 +1,4 @@
-﻿/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 // Copyright (c) Autodesk, Inc. All rights reserved
 // Written by Forge Partner Development
 //
@@ -26,6 +26,7 @@ var fileType;
 var options = {};
 var token = '';
 var documentId;
+var markup;
 
 
 function launchViewer(urn, name, ftype) {
@@ -52,7 +53,7 @@ function onDocumentLoadSuccess(doc) {
   // which references the root node of a graph that wraps each object from the Manifest JSON.
   var viewables = viewerApp.bubble.search({ 'type': 'geometry' });
   if (viewables.length === 0) {
-    console.error('Document contains no viewables.');
+    // console.error('Document contains no viewables.');
     return;
   }
 
@@ -65,10 +66,40 @@ function onDocumentLoadFailure(viewerErrorCode) {}
 
 function onItemLoadSuccess(_viewer, item) {
   viewer = _viewer;
-  viewer.loadExtension('Autodesk.Sample.XLSExtension');  
+  viewer.loadExtension('Autodesk.Sample.QRExtension');  
+  viewer.loadExtension('Autodesk.Viewing.MarkupsCore').then(function(markupsExt){
+  markup = markupsExt;
+});
+//console.log('_viewer:'+_viewer);
+//viewer.loadExtension('Autodesk.Viewing.MarkupsCore');
+//console.log('viewer:'+viewer);
 }
 
 function onItemLoadFail(errorCode) {}
+
+
+
+ /*function cloud(){
+
+//alert(string_url);
+    
+markup.enterEditMode();
+var cloud = new Autodesk.Viewing.Extensions.Markups.Core.EditModeRectangle(markup);
+markup.changeEditMode(cloud);
+var styleAttributes = ['stroke-width', 'stroke-color', 'stroke-opacity'];
+var nsu = Autodesk.Viewing.Extensions.Markups.Core.Utils;
+var styleObject = nsu.createStyle(styleAttributes, markup.viewer);
+    
+
+markup.enterEditMode();
+var rect = new Autodesk.Viewing.Extensions.Markups.Core.EditModeRectangle(markup)
+markup.changeEditMode(rect);
+console.log(styleObject);
+//console.log('urn:' + documentId + ' name: ' + fileName + ' ftype: ' + fileType); 
+//launchViewer(documentId,fileName,fileType);
+
+}*/
+
 
 function getForgeToken() {
   jQuery.ajax({
@@ -80,3 +111,6 @@ function getForgeToken() {
   });
   return token;
 }
+
+
+

@@ -1,22 +1,31 @@
 // token handling in session
 var token = require('./token');
-
+//var pug=require('pug')
 // web framework
 var express = require('express');
-var router = express.Router();
+var path = require('path');
 
-// forge
+//qr-code generator
+var qrImage = require('qr-image');
+
+var router = express.Router();
+var app = express();
+app.use(express.static('../index.html'));
+
+
 var forgeSDK = require('forge-apis');
+var versionResponse = {};
 
 router.get('/dm/getTreeNode', function (req, res) {
-  var tokenSession = new token(req.session);
-  if (!tokenSession.isAuthorized()) {
+   tokenSession = new token(req.session);
+   if (!tokenSession.isAuthorized()) {
     res.status(401).end('Please login first');
     return;
-  }
-
+  }   
+    
+ 
   var href = decodeURIComponent(req.query.id);
-  //("treeNode for " + href);
+  //("treeNode for " + href);   
 
   if (href === '#') {
     getHubs(tokenSession, res);
@@ -38,16 +47,43 @@ router.get('/dm/getTreeNode', function (req, res) {
         getFolderContents(projectId, resourceId/*folder_id*/, tokenSession, res);
         break;
       case 'items':
+       // console.log(req.query.id);
         var projectId = params[params.length - 3];
-        getVersions(projectId, resourceId/*item_id*/, tokenSession, res);
+        getVersions(projectId, resourceId/*item_id*/, tokenSession,  res)
         break;
     }
-  }
-});
+  }   
+})
+
+
+/*router.get('/qr', function (req, res) {
+   tokenSession = new token(req.session);
+   if (!tokenSession.isAuthorized()) {
+    res.status(401).end('Please login first');
+    return;
+   }     
+   getLatestVersion(tokenSession, req.query.itemId, req.query.projectId, req.query.version,res); 
+    console.log(versionResponse);
+  res.render('document',versionResponse);
+})*/
+
+
+router.get('/qrEmbed',  function (req, res) {
+   tokenSession = new token(req.session);
+    if (!tokenSession.isAuthorized()) {
+    res.status(401).end('Please login first');
+    return;
+  }   
+    var url_string = 'https://'+ req.headers.host+'/qr?projectId='+req.query.projectId+'&itemId='+req.query.itemId+'&version='+req.query.version;
+    var code = qrImage.image(url_string, { type: 'svg' });
+    res.setHeader('Content-type', 'image/svg+xml');  //sent qr image to client 
+    //console.log(JSON.stringify('res:'+ res));
+    code.pipe(res);    
+})   
+
 
 function getFolders(hubId, projectId, tokenSession, res) {
         // if the caller is a project, then show folders
-
         var projects = new forgeSDK.ProjectsApi();
         projects.getProjectTopFolders(hubId, projectId, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
           .then(function (topFolders) {
@@ -107,9 +143,8 @@ function getProjects(hubId, tokenSession, res) {
 }
 
 
-
 function getHubs(tokenSession, res) {
-   // # stands for ROOT
+   // # stands for ROOT 
     var hubs = new forgeSDK.HubsApi();
 
     hubs.getHubs({}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
@@ -146,7 +181,6 @@ function getHubs(tokenSession, res) {
 }
 
 
-
 function getFolderContents(projectId, folderId, tokenSession, res) {
   var folders = new forgeSDK.FoldersApi();
   folders.getFolderContents(projectId, folderId, {}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
@@ -172,9 +206,8 @@ function getFolderContents(projectId, folderId, tokenSession, res) {
     });
 }
 
-var moment = require('moment');
 
-function getVersions(projectId, itemId, tokenSession, res) {
+function getVersions(projectId, itemId, tokenSession,  res) {
   var items = new forgeSDK.ItemsApi();
   items.getItemVersions(projectId, itemId, {}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
     .then(function (versions) {
@@ -185,14 +218,15 @@ function getVersions(projectId, itemId, tokenSession, res) {
         var fileType = version.attributes.fileType;
         var dateFormated = (versions.body.data.length > 1 || days > 7 ? lastModifiedTime.format('MMM D, YYYY, h:mm a') : lastModifiedTime.fromNow());
         var designId = (version.relationships != null && version.relationships.derivatives != null ? version.relationships.derivatives.data.id : null);
-        var fileName = version.attributes.fileName;
+        /*Version details*/
+        var versionDetails = 'projectId='+ projectId + '&itemId=' + itemId + '&version='+ version.attributes.versionNumber;  
         versionsForTree.push(prepareItemForTree(
           designId,
           dateFormated + ' by ' + version.attributes.lastModifiedUserName,
           'versions',
           false,
           fileType,
-          fileName
+          versionDetails
         ));
       });
       res.json(versionsForTree);
@@ -204,10 +238,43 @@ function getVersions(projectId, itemId, tokenSession, res) {
 }
 
 
+router.studious = function getLatestVersion( tokenSession, scannedItemId, scannedProjectId, currentVersion, callback, res){
+    var items = new forgeSDK.ItemsApi();    
+    var versionNumber=[];  
+    
+    items.getItemVersions(scannedProjectId, scannedItemId, {}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
+        .then(function (versions) {
+            versions.body.data.forEach(function (version) {          
+            versionNumber.push(version.attributes.versionNumber);
+            /* Display Name */
+           // versionResponse.itemName = version.attributes.displayName;            
+            })
+         var latestVersion=Math.max.apply(null,versionNumber);  
+        /* Check updates  */
+       // versionResponse.update = (currentVersion < latestVersion) ? ((latestVersion - currentVersion > 1)?('There are '+ (latestVersion - currentVersion) + ' updates in version' ):('There is a update in version' )) : ('Current version is latest');  
+        if(versionResponse.link!='' && versionResponse.link!=undefined)callback(versionResponse, res);
+    }).catch(function(err){
+            console.log(err);
+    }) 
+    items.getItemTip(scannedProjectId, scannedItemId, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
+        .then(function(recentVersion){
+       /* Link of latest version  */
+     // versionResponse.createdUser = recentVersion.body.data.attributes.createUserName;
+     // versionResponse.modifiedUser = recentVersion.body.data.attributes.lastModifiedUserName;
+     // versionResponse.modifiedAt = moment(recentVersion.body.data.attributes.lastModifiedTime).format('LLLL');
+      if(versionResponse.update!='' && versionResponse.update!=undefined)callback(versionResponse, res);
+    }).catch(function(err){
+            console.log(err);
+    }) 
+    
+   
+}
+
 
 function prepareItemForTree(_id, _text, _type, _children, _fileType, _fileName) {
   return { id: _id, text: _text, type: _type, children: _children, fileType:_fileType, fileName: _fileName };
 }
+
 
 /*
     switch (resourceName) {
@@ -279,12 +346,10 @@ function prepareItemForTree(_id, _text, _type, _children, _fileType, _fileName) 
 */
 
 
-
-
 var moment = require('moment');
 
 // Formats a list to JSTree structure
-function prepareArrayForJSTree(listOf, canHaveChildren, data) {
+function prepareArrayForJSTree(listOf, canHaveChildren, data) {    
   if (listOf == null) return '';
   var treeList = [];
   listOf.forEach(function (item, index) {
@@ -309,5 +374,6 @@ function prepareArrayForJSTree(listOf, canHaveChildren, data) {
   return treeList;
 }
 
-
 module.exports = router;
+
+

@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////
 // Copyright (c) Autodesk, Inc. All rights reserved
-// Written by Forge Partner Development 
+// Written by Forge Partner Development
 //
 // Permission to use, copy, modify, and distribute this software in
 // object code form for any purpose and without fee is hereby granted,
@@ -16,23 +16,21 @@
 // UNINTERRUPTED OR ERROR FREE.
 /////////////////////////////////////////////////////////////////////
 
-'use strict'; // http://www.w3schools.com/js/js_strict.asp
+if (!window.jQuery) alert('jQuery is required for this sample');
+function getQRImage(){
+   jQuery.ajax({
+    url: '/qrEmbed',
+    data: urlString(),
+    dataType : 'json',
+    success: function (res) {
+      rio = res;
+    console.log(res);
+    },
+    async: true
+  });
+}
 
-module.exports = {
 
-  // Autodesk Forge configuration
-
-  // this this callback URL when creating your client ID and secret
-  callbackURL: process.env.FORGE_CALLBACK_URL || 'http://localhost:3000/api/forge/callback/oauth',
-
-  // set enviroment variables or hard-code here
-  credentials: {
-    client_id: process.env.FORGE_CLIENT_ID || 'jk2PU0MPmtBQdKo3MVAp9YB0go4U379m',
-    client_secret: process.env.FORGE_CLIENT_SECRET || 'xAJCXWGd2q1Gx1pA',
-  },
-
-  // Required scopes for your application on server-side
-  scopeInternal: ['data:read', 'data:write', 'data:create'],
-  // Required scope of the token sent to the client
-  scopePublic: ['viewables:read', 'data:write', 'data:create'],
-};
+function forgeQR() {
+     neuer();
+}

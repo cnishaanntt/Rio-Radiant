@@ -28,8 +28,27 @@ body {
 }
 
 .toolbarQRButton {
-    background-image: url(/img/qr.png);
-    background-size: 16px;
+    background-image: url(/img/qrb.png);
+    background-size: 24px;
     background-repeat: no-repeat;
     background-position: center;
 }
+
+hr {
+     border-top: 1px solid #ffffff;
+}
+
+h3 {
+    color: dimgrey;
+    font-family: "Century Gothic";
+}
+
+
+ul {
+    list-style: none;
+}
+
+
+
+
+.
