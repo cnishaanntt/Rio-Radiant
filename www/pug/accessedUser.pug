@@ -1,0 +1,60 @@
+doctype html
+html(lang='en')
+    head
+        title  Users
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+        link(rel='stylesheet', href='/../css/main.css')     
+        link(rel='shortcut icon', href='/../img/favicon.ico', type='image/x-icon')
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    body
+        div(class='container-fluid')  
+            div(class='row')
+                div(class='col-sm-4')
+                div(class='col-sm-4')
+                    p   #[h3 Accessed Users]
+            hr
+            div(class='row')
+            div(class='panel-group' )        
+                div(class='panel panel-default')
+                    div(class='panel panel-heading')
+                        p   #[i(class='fa fa-info col-sm-2', aria-hidden='true')]
+                            h4  #[b Access details]                     
+                    div(class='panel panel-body')
+                        li  
+                            div(class='row ')
+                                div(class='col-sm-2 btn-center')
+                                    a(class='btn btn-basic') #[i(class='fa fa-smile-o col-sm-2 hidden-sm hidden-xs', aria-hidden='true')]
+                                div(class='col-sm-2 btn-center')
+                                    a(class='btn btn-basic') #[i(class='fa fa-user col-sm-2 hidden-xs', aria-hidden='true')]
+                                div(class='col-sm-2 btn-center')
+                                    a(class='btn btn-basic') #[i(class='fa fa-envelope-open-o col-sm-2 hidden-xs', aria-hidden='true')]
+                                div(class='col-sm-2 btn-center')
+                                    a(class='btn btn-basic') #[i(class='fa fa-free-code-camp col-sm-2 hidden-xs', aria-hidden='true')]
+                                div(class='col-sm-2 btn-center')
+                                    a(class='btn btn-basic') #[i(class='fa fa-clock-o col-sm-2 hidden-xs', aria-hidden='true')]
+         
+                                li
+                                    each v, k in json
+                                        div(class='row')
+                                            each val, key in {v}
+                                                div(class='col-sm-2 btn-center')
+                                                    a(class='btn btn-basic')   #[img(src=val.profileImage, alt='Smiley face',height='30', class='iconimg hidden-sm img-circle')]
+                                                div(class='col-sm-2 btn-center')
+                                                    a(class='btn btn-basic')   #{val.userName}
+                                                div(class='col-sm-2 btn-center')
+                                                    a(class='btn btn-basic')   #{val.emailId}
+                                                div(class='col-sm-2 btn-center')
+                                                    a(class='btn btn-basic')   #{val.latestVersion}
+                                                div(class='col-sm-2 btn-center')
+                                                    a(class='btn btn-basic')   #{(val.scannedAt.toString()).split('GMT')[0]}
+                                                          
+
+
+
+
+
+    

@@ -26,17 +26,18 @@ var fileType;
 var options = {};
 var token = '';
 var documentId;
-var markup;
+
 
 
 function launchViewer(urn, name, ftype) {
   options = {
     env: 'AutodeskProduction',
     getAccessToken: getForgeToken
-  };
+  };  
+ 
   fileName = name;
   fileType = ftype;
-  documentId = urn;
+  documentId = urn;   
   Autodesk.Viewing.Initializer(options, function onInitialized() {
     viewerApp = new Autodesk.Viewing.ViewingApplication('forgeViewer');
     viewerApp.registerViewer(viewerApp.k3D, Autodesk.Viewing.Private.GuiViewer3D);
@@ -57,29 +58,59 @@ function onDocumentLoadSuccess(doc) {
     return;
   }
 
-  // Choose any of the avialble viewables
+  // Choose any of the available viewables
   viewerApp.selectItem(viewables[0].data, onItemLoadSuccess, onItemLoadFail);
 
 }
 
-function onDocumentLoadFailure(viewerErrorCode) {}
-
-function onItemLoadSuccess(_viewer, item) {
-  viewer = _viewer;
-  viewer.loadExtension('Autodesk.Sample.QRExtension');  
-  viewer.loadExtension('Autodesk.Viewing.MarkupsCore').then(function(markupsExt){
-  markup = markupsExt;
-});
-//console.log('_viewer:'+_viewer);
-//viewer.loadExtension('Autodesk.Viewing.MarkupsCore');
-//console.log('viewer:'+viewer);
+function onDocumentLoadFailure(viewerErrorCode) {
+    
 }
 
-function onItemLoadFail(errorCode) {}
+function onItemLoadSuccess(_viewer, item) {
+    viewer = _viewer;        
+    viewer.loadExtension('Autodesk.Viewing.QRButtonExtension');  
+    viewer.loadExtension('Autodesk.Viewing.QRDockExtension'); 
+    getQRImage();
+    
+}
 
+function onItemLoadFail(errorCode) { 
+    alert('Sorry, Item could not be loaded ');
+}
 
+function getForgeToken() {
+  jQuery.ajax({
+    url: '/user/token',
+    success: function (res) {
+      token = res;
+    },
+    async: false
+  });
+  return token;
+}
 
  /*function cloud(){
+
+
+
+//append image to Dock
+    
+    
+    viewer.loadExtension('Autodesk.Viewing.MarkupsCore').then(function(markupsExt){
+    markup = markupsExt;
+    markup.enterEditMode();
+    
+    var styleAttributes = ['stroke-width', 'stroke-color', 'stroke-opacity'];
+    var nsu = Autodesk.Viewing.Extensions.Markups.Core.Utils;
+    var styleObject = nsu.createStyle(styleAttributes, markup);
+    styleObject['stroke-width']=55;
+    markup.setStyle(styleObject);
+    var cloud = new Autodesk.Viewing.Extensions.Markups.Core.EditModeRectangle(markup);
+    markup.changeEditMode(cloud);
+        
+});
+
 
 //alert(string_url);
     
@@ -101,16 +132,6 @@ console.log(styleObject);
 }*/
 
 
-function getForgeToken() {
-  jQuery.ajax({
-    url: '/user/token',
-    success: function (res) {
-      token = res;
-    },
-    async: false
-  });
-  return token;
-}
 
 
 

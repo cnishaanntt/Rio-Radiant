@@ -1,0 +1,48 @@
+doctype html
+html(lang='en')
+    head
+        title  #{itemName}
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+        link(rel='stylesheet', href='/../css/main.css')     
+        link(rel='shortcut icon', href='/../img/favicon.ico', type='image/x-icon')
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    body
+        div(class='container-fluid')
+            hr
+            hr   
+            div(class='row')
+                div(class='col-sm-4')
+                div(class='col-sm-4')
+                    p   #[h3    Version particulars]
+                div(class='col-sm-4 hidden-sm')
+                    img(src='/../img/icon.png', height='100', class='iconimg hidden-sm hidden-xs')
+                    
+            div(class='row')
+                div(class='col-sm-4')
+                div(class='col-sm-4 hidden-sm')
+                    p   #[em Rio-Radiant analysed the document and here you go....]
+                div(class='col-sm-4')
+               
+            div(class='row')
+                div(class='col-sm-4')
+                div(class='col-sm-5')
+                    block content
+                div(class='col-sm-3')
+                
+            div(class='row')
+                div(class='col-sm-4')
+                div(class='col-sm-5')
+                    div(class='btn-group btn-group-justified')
+                        a(class='btn btn-default', href='/?'+ designId + '/' + itemName, style = ' background: green; color:white') GET IT
+                div(class='col-sm-3')
+                  
+               
+            
+           
+                
+                    
+    

@@ -33,8 +33,7 @@ router.get('/user/logoff', function (req, res) {
 router.get('/user/profile', function (req, res) {
   var tokenSession = new token(req.session);
   if (!tokenSession.isAuthorized()) {
-    res.status(401).end('Please login first');
-    return;
+    req.session.redirectTo=req.originalUrl;    res.sendFile(path.join(__dirname,'../www/signIn.html')); 
   }
 
   request({
@@ -71,11 +70,9 @@ router.get('/user/token', function (req, res) {
   var tokenSession = new token(req.session);
   if (!tokenSession.isAuthorized()) {
     res.end("");
-
     return;
   }
-
-  res.end(tokenSession.getPublicCredentials().access_token);
+  res.end(tokenSession.getPublicCredentials().access_token);    
 });
 
 // return the forge authenticate url
@@ -94,8 +91,9 @@ router.get('/user/authenticate', function (req, res) {
 router.get('/api/forge/callback/oauth', function (req, res) {
   var code = req.query.code;
   var tokenSession = new token(req.session);
-
-  // first get a full scope token for internal use (server-side)
+  var redirectTo = req.session.redirectTo ? req.session.redirectTo : '/';
+  delete req.session.redirectTo;
+    // first get a full scope token for internal use (server-side)
   var req = new forgeSDK.AuthClientThreeLegged(config.credentials.client_id, config.credentials.client_secret, config.callbackURL, config.scopeInternal);
   //console.log(code);
   req.getToken(code)
@@ -114,7 +112,7 @@ router.get('/api/forge/callback/oauth', function (req, res) {
           tokenSession.setPublicOAuth(req2);
 
          // console.log('Public token (limited scope): ' + publicCredentials.access_token); // debug
-          res.redirect('/');
+          res.redirect(redirectTo);
         })
         .catch(function (error) {
           respondWithError(res, error)

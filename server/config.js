@@ -27,12 +27,13 @@ module.exports = {
 
   // set enviroment variables or hard-code here
   credentials: {
-    client_id: process.env.FORGE_CLIENT_ID || 'jk2PU0MPmtBQdKo3MVAp9YB0go4U379m',
-    client_secret: process.env.FORGE_CLIENT_SECRET || 'xAJCXWGd2q1Gx1pA',
+    client_id: process.env.FORGE_CLIENT_ID || 'Your Forge Client Id',
+    client_secret: process.env.FORGE_CLIENT_SECRET || 'Your Forge Client Secret',
+    mongodb_url:process.env.MONGODB_URL||'mongodb://localhost:27017/yourdbname'
   },
 
   // Required scopes for your application on server-side
-  scopeInternal: ['data:read', 'data:write', 'data:create'],
+  scopeInternal: ['data:read'],
   // Required scope of the token sent to the client
-  scopePublic: ['viewables:read', 'data:write', 'data:create'],
+  scopePublic: ['viewables:read']
 };

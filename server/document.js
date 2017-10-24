@@ -1,78 +1,46 @@
 // token handling in session
 var token = require('./token');
 
-//data management
+//data management tree
 var dm = require('./data.management.tree')
+var fs = require('fs');
 
 // web framework
 var express = require('express');
+var app = express();
+app.locals.moment = require('moment');
 
-var fs = require('fs');
-
+ 
 //path 
 var path = require('path');
 var router = express.Router();
 var pug = require('pug');
 var doce = express();
  doce.set('view engine', 'pug'); 
- doce.get('/',  function (req, res) {  
+ doce.set('views', path.join(__dirname, '../www/pug'));
+ 
+doce.get('/',  function (req, res) { 
     tokenSession = new token(req.session);
     if (!tokenSession.isAuthorized()) {
-    res.status(401).end('Please login first');
-    return;
+    req.session.redirectTo=req.originalUrl;    res.sendFile(path.join(__dirname,'../www/signIn.html'));    
   } 
-   versionCallback = function (data,res){       
-      // data=JSON.stringify(data);
-      // console.log(data);
-       res.render('document' );
+   versionCallback = function (data,res){ 
+       //data = JSON.stringify(data);
+       //data.replace(/\\"/g,"\uFFFF"); //U+ FFFF
+       //data = data.replace(/\"([^"]+)\":/g,"$1:").replace(/\uFFFF/g,"\\\"");
+       res.render('document', {createdUser: data.createdUser, modifiedUser:data.modifiedUser, modifiedAt:data.modifiedAt, itemName:data.itemName, update:data.update, designId:data.designId, itemId:data.itemId, projectId:data.projectId, currentVersion:data.currentVersion, latestVersion:data.latestVersion});
     } 
-    
-    dm.studious(tokenSession, req.query.itemId, req.query.projectId, req.query.version, versionCallback, res);
-    
-    //response 
-   // res.render('document',{ title: 'Hey', message: 'Hello there!' } );
-
+    dm.studious(tokenSession, req.query.itemId, req.query.projectId, req.query.version, versionCallback, res);    
 }); 
-
-/* app.get('/', function (req, res) {
-   tokenSession = new token(req.session);
-   if (!tokenSession.isAuthorized()) {
-    res.status(401).end('Please login first');
-    return;
-   }     
-  dm.studious(tokenSession, req.query.itemId, req.query.projectId, req.query.version,res)
-    .then(function(data){
-        /*if(err){
-            console.log(err);
-        }  else {
-            console.log(data);
-      /*  }  
-  })
-  });*/
-     // console.log(data);
-    //res.render('index',{ title: 'Hey', message: 'Hello there!' } );
-  //res.render('document',versionResponse);
-//})   var alpha = dm.rio(req.query.a,dm.cio);
-  // if(alpha!=undefined) console.log(dm.cio(alpha));
-  
-
-
-
-//var dzeren = dm.studious();
-
-
-//console.log(dzeren);
-
-
-
-//template engine
-//app.engine('pug', require('pug').__express);
-
-
-
-//run
-//app.listen('3000', function(){
-  //  console.log('App is listening at 3000');
-//});
+doce.get('/getusers',  function (req, res) { 
+    tokenSession = new token(req.session);
+    if (!tokenSession.isAuthorized()) {
+    req.session.redirectTo=req.originalUrl;    res.sendFile(path.join(__dirname,'../www/signIn.html'));    
+  } 
+   callback = function (data,res){ 
+       res.render('accessedUser', {json:data});
+    } 
+    dm.carnival(tokenSession, req.query.itemId, req.query.projectId, req.query.scannedVersion, req.query.latestVersionThen, callback, res);
+});
 
 module.exports = doce;

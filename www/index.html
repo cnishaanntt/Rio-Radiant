@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>QR Markup</title>
+  <title>Rio-Radiant : QR Markup</title>
   <!-- Common packages: JQuery & Bootstrap -->
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/jstree/style.css"/>
@@ -12,22 +12,29 @@
   <script src="/js/bootstrap.min.js"></script>
   <script src="/js/jstree.min.js"></script>
   <script src="/js/moment.min.js"></script>
+  <script src="/js/libraries/html2canvas.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.5.1/jQuery.print.js"></script>
 
   <!-- Notification ballons and clipboard util -->
   <script src="js/libraries/notify.min.js"></script>
   <script src="js/libraries/clipboard.min.js"></script>
 
   <!-- Autodesk Forge Viewer files -->
-  <link rel="stylesheet" href="https://developer.api.autodesk.com/derivativeservice/v2/viewers/style.min.css?v=v2.16" type="text/css" />
-  <script src="https://developer.api.autodesk.com/derivativeservice/v2/viewers/three.min.js?v=v2.16"></script>
-  <script src="https://developer.api.autodesk.com/derivativeservice/v2/viewers/viewer3D.min.js?v=v2.16"></script>
+  <link rel="stylesheet" href="https://developer.api.autodesk.com/derivativeservice/v2/viewers/style.min.css?v=v3.1" type="text/css" />
+  <script src="https://developer.api.autodesk.com/derivativeservice/v2/viewers/three.min.js?v=v3.1"></script>
+  <script src="https://developer.api.autodesk.com/derivativeservice/v2/viewers/viewer3D.min.js?v=v3.1"></script>
 
   <!-- BIM360 packages: login and authentication -->
+    
+    
+    
   <script src="/js/oauth.js"></script>
   <script src="/js/forge.data.management.js"></script>
   <script src="/js/forge.viewer.js"></script>
-  <script src="/js/QRextension.js"></script>
-
+  <script src="/js/QRbutton.js"></script>
+  <script src="/js/QRdock.js"></script>
+  <script src="/js/screenshot.js"></script>
+    
  <!-- XLS related libraries -->
   <script src="js/libraries/Blob.js"></script> <!-- https://github.com/eligrey/Blob.js -->
   <script src="js/libraries/FileSaver.min.js"></script> <!-- https://github.com/eligrey/FileSaver.js -->
@@ -40,9 +47,8 @@
   <div class="container-fluid">
     <ul class="nav navbar-nav left">
       <li>
-        <p class="navbar-text">
-          <img alt="Autodesk Forge" src="/img/qra.png" height="20" />
-            <b>QR Markup</b>
+        <p class="navbar-text grow">
+          <img alt="Autodesk Forge" src="/img/qra.png" height="30" class="iconimg" />
         </p>
       </li>
     </ul>
@@ -50,16 +56,16 @@
     <ul class="nav navbar-nav navbar-right ">
       <li>
         <a href="#" id="Help" onclick="$('#about').modal('show');"><span class="glyphicon glyphicon-info-sign"></span>
-          <span id="infoText" title="About this Autodesk App">About</span></a>
+          <span id="infoText" title="About this Autodesk App"><em>About</em></span></a>
       </li>
       <li>
         <a href="#" id="BIMconfig" onclick="$('#provisionAccountModal').modal('show');" style="display: none"><span class="glyphicon glyphicon-cog"></span>
-          <span id="helpButtonText" title="Info on setting up BIM credentials">Config</span></a>
+          <span id="helpButtonText" title="Info on setting up BIM credentials"><em>Config</em></span></a>
       </li>
      
       <li>
         <a href="#" id="signInButton"><span class="glyphicon glyphicon-user" id="signInProfileImage"></span>
-          <span id="signInButtonText" title="Sign in with your Autodesk Account">Sign in</span></a>
+            <span id="signInButtonText" title="Sign in with your Autodesk Account"><em>Sign in</em></span></a>
       </li>
     </ul>
 
@@ -67,7 +73,7 @@
   </div>
 </nav>
 <div id="dataManagementHubs" class="dataManagementHubs">
-  <Button class="btn btn-lg btn-default" style="margin-left:5px" onclick="forgeSignIn()"><img src="img/autodesk_text.png" height="20px"/> Sign in</Button>
+    <Button class="btn btn-lg btn-default" style="margin-left:5px" onclick="forgeSignIn()"><img src="img/autodesk_text.png" height="20px"/> <h3>Sign in</h3> </Button>
 </div>
 <!-- End of navbar -->
 <div id="forgeViewer" class="forgeviewer"></div>
@@ -154,9 +160,13 @@
           <li>You need an account on <img src="img/autodesk_text.png" height="15"></li>
           <li>Click the <strong>Sign in</strong> button to login</li>
           <li>A folder tree will appear on the left.  Click the item to expand</li>  
-          <li>Navigate to a <strong>Revit file</strong> and click on a sub-item 'version' to view </li>
-          <li>The Revit model will appear in the right pane</li>
-            <li>Once you are viewing the file, click on the 'QR Markup' <img src="img/qr.png" height="28">  toolbar button</li>
+          <li>Navigate to a <strong> file</strong> and click on a sub-item 'version' to view </li>
+          <li>The model will appear in the right pane with QR markup, resize the dock container of QR markup</li>
+          <li>Once you are viewing the file, click on the 'Print Preview' <img src="/img/print.png"  height="28"> toolbar button</li>
+          <li>Print the document</li>
+          <li>Scan the document and get Latest version details</li>
+          <li>Click on the title in panel header to view users who accessed the file</li>
+          <li>Click on 'Get it' to get latest version of document</li>
           <li>Explore new possibilities</li>
           <ul>
         </ol>

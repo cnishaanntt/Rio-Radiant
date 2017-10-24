@@ -18,19 +18,80 @@
 
 if (!window.jQuery) alert('jQuery is required for this sample');
 function getQRImage(){
-   jQuery.ajax({
-    url: '/qrEmbed',
+    afterQrload();
+    jQuery.ajax({
+    url: '/qrEmbed?' + new Date().getTime(),
     data: urlString(),
     dataType : 'json',
     success: function (res) {
-      rio = res;
-    console.log(res);
+        console.log(res);
     },
     async: true
   });
+   
+}
+function afterQrload(){
+    $('#toolbar-QRShowTool').hide();    
+    $('#qrDocument').show();
+    $('<img/>',{
+        src:'/qrEmbed?' + new Date().getTime(),
+        class:"qr",
+        id:"qrImage"
+    }).appendTo($('#qrDocument'));  
+
+    
+    //close button Animation
+    $('.dockingPanel').hover(function () {
+    $('.dockingPanelClose').css({opacity : 1});
+      }, 
+      function () {
+        $('.dockingPanelClose').css({opacity : 0.0});
+      });   
+    
+    
+    $('.dockingPanelClose').click(function () {
+       $('#toolbar-QRShowTool').show(); 
+       $('#toolbar-QRPrintTool').hide();
+       $('#dataManagementHubs').css('opacity','1');
+       $('#dataManagementHubs').show();
+       $('#guiviewer3d-toolbar').show();
+       $('#forgeViewer').css('margin-left','300px'); 
+       $('#forgeViewer').css('position','absolute');
+    });   
+    
+}
+function printPreview() {
+    var canvas = $("#forgeViewer")[0];
+    console.log(canvas);
+    console.log(document.getElementById('docQR'));
+   $('#qrImage').click(function () {
+        $('#dataManagementHubs').css('opacity','1');
+        $('#dataManagementHubs').show();
+        $('#guiviewer3d-toolbar').show();
+        $('#forgeViewer').css('margin-left','300px'); 
+        $('#forgeViewer').css('position','absolute');
+      }); 
+    $('#dataManagementHubs').css('animation-name', 'fadeout');
+    $('#dataManagementHubs').css('animation-duration', '1s');
+    $('#forgeViewer').css('animation-name','moveleft');
+    $('#forgeViewer').css('animation-duration','1s');
+    setTimeout(function() {
+          $('#dataManagementHubs').hide();
+          $('#guiviewer3d-toolbar').hide();
+          $('#forgeViewer').css('margin-left','0'); 
+          $('#forgeViewer').css('position','absolute');
+    }, 1000);     
+}
+function qrImageShow(){
+     $('#qrDocument').show();
+     $('#dataManagementHubs').show();
+     $('#toolbar-QRPrintTool').show();
+     $('#toolbar-QRShowTool').hide();
+    
 }
 
 
-function forgeQR() {
-     neuer();
-}
+
+
+
+

@@ -3,52 +3,155 @@ html, body {
 }
 
 body {
-    padding-top: 61px; /* space for the top nav bar */
+    padding-top: 65px; /* space for the top nav bar */
+    min-width: 100%;
+    min-height: 100%;
+    position: absolute;
+}
+
+
+hr {
+    border-top: 1px solid #ffffff;
+    opacity: 0;
+}
+
+h3,h6 {
+    color: dimgrey;
+    font-family: "Century Gothic";
+}
+
+
+li,ul {
+    list-style: none;
+}
+
+a {
+    color: dimgray;
 }
 
 #dataManagementHubs {
     width: 300px;
-    overflow: auto;
     height: 100%;
+    overflow: scroll;
+    resize: both;
+    background-color:white;
 }
+
 
 #forgeViewer {
     display: block;
-    position: absolute;
+    position:absolute;
     height: auto;
     bottom: 0;
     top: 0;
     left: 0;
     right: 0;
-    margin-top: 50px;
+    margin-top: 65px;
     margin-bottom: 0px;
     margin-right: 0px;
     margin-left: 300px;
-    background-color: #d0d0d0;
+    background-color:white;
 }
 
-.toolbarQRButton {
+.iconimg {
+   -webkit-transition: -webkit-transform .8s ease-in-out;
+          transition:transform .8s ease-in-out;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+
+.iconimg:hover {
+  -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+.grow { 
+    transition: all .2s ease-in-out; 
+}
+
+.grow:hover {
+    transform: scale(1.2);
+}
+
+.navbar{
+    background-color:white;
+    color: white;
+}
+
+
+.panel-default > .panel-heading {
+  background-color: white;
+  color: white;
+  background-image: url(/img/background1.png);
+}
+
+.qr{ 
+    max-width: 80%;
+    max-height: 80%; 
+    display: block;
+    margin: 0 auto;
+}
+
+.QRcodeDocButton {
     background-image: url(/img/qrb.png);
     background-size: 24px;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-hr {
-     border-top: 1px solid #ffffff;
+.QRcodePrintButton {
+    background-image: url(/img/print.png);
+    background-size: 24px;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-h3 {
-    color: dimgrey;
-    font-family: "Century Gothic";
+.btn-white{
+    color:white;
+}
+
+.btn-white:hover {
+    color:white;
+    transform: scale(1.2);
+}
+
+.btn-center{
+    display: flex;
+    justify-content: center;
 }
 
 
-ul {
-    list-style: none;
+@keyframes fadeout {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+@keyframes moveleft{
+    from {
+        margin-left: 300px;
+        z-index:0;
+    }
+    to {
+        margin-left: 0px;
+        z-index:-1;
+    }
+}
+@keyframes moveright{
+    from {
+        margin-left: 0px;
+        z-index:-1;
+    }
+    to {
+        margin-left: 300px;
+        z-index:0;
+    }
 }
 
 
 
+    
+    
+    
 
 .
