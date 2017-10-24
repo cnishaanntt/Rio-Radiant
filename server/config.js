@@ -29,7 +29,7 @@ module.exports = {
   credentials: {
     client_id: process.env.FORGE_CLIENT_ID || 'Your Forge Client Id',
     client_secret: process.env.FORGE_CLIENT_SECRET || 'Your Forge Client Secret',
-    mongodb_url:process.env.MONGODB_URL||'mongodb://localhost:27017/yourdbname'
+    mongodb_url:process.env.MONGODB_URL||'mongodb://nishant:Portofspain@ds133044.mlab.com:33044/rio-dublin'
   },
 
   // Required scopes for your application on server-side
