@@ -256,7 +256,7 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
                 versionResponse.emailId = user.body.emailId; 
                 versionResponse.scannedAt=timezone.tz(moment(),timezone.tz.guess()).format('LLLL');
                 console.log( versionResponse.scannedAt);
-                if(versionResponse.createdUser != '' && versionResponse.createdUser != undefined){
+                if(versionResponse.createdUser != '' && versionResponse.createdUser != undefined && versionResponse.latestVersion != '' && versionResponse.latestVersion != undefined){
                     var scanToDb = new scanDetails({
                         itemId: scannedItemId,
                         projectId: scannedProjectId,
