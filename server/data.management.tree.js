@@ -253,9 +253,7 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
             .then(function(user) {
                 versionResponse.profileImage = user.body.profileImages.sizeX40;
                 versionResponse.userName = user.body.userName;        
-                versionResponse.emailId = user.body.emailId; 
-                versionResponse.scannedAt=timezone.tz(moment(),timezone.tz.guess()).format('LLLL');
-                console.log( versionResponse.scannedAt);
+                versionResponse.emailId = user.body.emailId;
                 if(versionResponse.createdUser != '' && versionResponse.createdUser != undefined && versionResponse.latestVersion != '' && versionResponse.latestVersion != undefined){
                     var scanToDb = new scanDetails({
                         itemId: scannedItemId,
@@ -264,8 +262,7 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
                         userName: versionResponse.userName,
                         emailId: versionResponse.emailId,
                         currentVersion: versionResponse.currentVersion,
-                        latestVersion: versionResponse.latestVersion,
-                        scannedAt:versionResponse.scannedAt
+                        latestVersion: versionResponse.latestVersion
                     })
                 //save scan Details
                     scanToDb.save(function(err) {
