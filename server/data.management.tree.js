@@ -173,7 +173,7 @@ function getFolderContents(projectId, folderId, tokenSession, res) {
 }
 function getVersions(projectId, itemId, tokenSession,  res) {
   var items = new forgeSDK.ItemsApi();
-   console.log(timezone.tz.guess());
+   console.log('Timezone : ' + timezone.tz.guess());
   items.getItemVersions(projectId, itemId, {}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
     .then(function (versions) {
       var versionsForTree = [];
