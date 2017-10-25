@@ -32,9 +32,11 @@ html(lang='en')
                                     a(class='btn btn-basic') #[i(class='fa fa-user col-sm-2 hidden-xs', aria-hidden='true')]
                                 div(class='col-sm-2 btn-center')
                                     a(class='btn btn-basic') #[i(class='fa fa-envelope-open-o col-sm-2 hidden-xs', aria-hidden='true')]
-                                div(class='col-sm-2 btn-center')
+                                div(class='col-sm-1 btn-center')
+                                    a(class='btn btn-basic') #[i(class='fa fa-eye col-sm-2 hidden-xs', aria-hidden='true')]
+                                div(class='col-sm-1 btn-center')
                                     a(class='btn btn-basic') #[i(class='fa fa-free-code-camp col-sm-2 hidden-xs', aria-hidden='true')]
-                                div(class='col-sm-2 btn-center')
+                                div(class='col-sm-4 btn-center')
                                     a(class='btn btn-basic') #[i(class='fa fa-clock-o col-sm-2 hidden-xs', aria-hidden='true')]
          
                                 li
@@ -47,10 +49,12 @@ html(lang='en')
                                                     a(class='btn btn-basic')   #{val.userName}
                                                 div(class='col-sm-2 btn-center')
                                                     a(class='btn btn-basic')   #{val.emailId}
-                                                div(class='col-sm-2 btn-center')
+                                                div(class='col-sm-1 btn-center')
+                                                    a(class='btn btn-basic')   #{val.currentVersion}
+                                                div(class='col-sm-1 btn-center')
                                                     a(class='btn btn-basic')   #{val.latestVersion}
-                                                div(class='col-sm-2 btn-center')
-                                                    a(class='btn btn-basic')   #{(val.scannedAt.toString()).split('GMT')[0]}
+                                                div(class='col-sm-4 btn-center')
+                                                    a(class='btn btn-basic')   #{val.scannedAt}
                                                           
 
 
