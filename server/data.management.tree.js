@@ -1,9 +1,12 @@
 // token handling in session
 var token = require('./token');
 var scanDetails =require('./scan.details');
+
 // web framework
 var express = require('express');
 var path = require('path');
+var timezone = require('moment-timezone');
+
 //qr-code generator
 var qrImage = require('qr-image');
 var router = express.Router();
@@ -13,6 +16,8 @@ app.locals.moment = require('moment');
 var forgeSDK = require('forge-apis');
 var versionResponse = {};
 var old_url;
+
+console.log(timezone.tz.guess());
 
 router.get('/dm/getTreeNode', function (req, res) {
    tokenSession = new token(req.session);
