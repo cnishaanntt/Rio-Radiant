@@ -21,8 +21,8 @@ var scanSchema = new Schema({
   profileImage: { type: String, required: true },
   userName: { type: String, required: true },
   emailId: { type: String, required: true },
-  currentVersion: Number,
-  latestVersion:Number,
+  currentVersion: { type: Number, required: true },
+  latestVersion:{ type: Number, required: true },
   scannedAt: Date
   
 });
