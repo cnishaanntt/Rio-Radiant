@@ -17,8 +17,6 @@ var forgeSDK = require('forge-apis');
 var versionResponse = {};
 var old_url;
 
-console.log(timezone.tz.guess());
-
 router.get('/dm/getTreeNode', function (req, res) {
    tokenSession = new token(req.session);
    if (!tokenSession.isAuthorized()) {
@@ -175,6 +173,7 @@ function getFolderContents(projectId, folderId, tokenSession, res) {
 }
 function getVersions(projectId, itemId, tokenSession,  res) {
   var items = new forgeSDK.ItemsApi();
+   console.log(timezone.tz.guess());
   items.getItemVersions(projectId, itemId, {}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
     .then(function (versions) {
       var versionsForTree = [];
