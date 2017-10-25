@@ -13,9 +13,13 @@ var router = express.Router();
 var app = express();
 app.use(express.static('../index.html'));
 app.locals.moment = require('moment');
+
 var forgeSDK = require('forge-apis');
 var versionResponse = {};
 var old_url;
+
+
+
 
 router.get('/dm/getTreeNode', function (req, res) {
    tokenSession = new token(req.session);
@@ -173,7 +177,6 @@ function getFolderContents(projectId, folderId, tokenSession, res) {
 }
 function getVersions(projectId, itemId, tokenSession,  res) {
   var items = new forgeSDK.ItemsApi();
-   console.log('Timezone : ' + timezone.tz.guess());
   items.getItemVersions(projectId, itemId, {}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
     .then(function (versions) {
       var versionsForTree = [];
@@ -242,7 +245,7 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
           versionResponse.link = recentVersion.body.data.links.self.href;
           versionResponse.createdUser = recentVersion.body.data.attributes.createUserName;
           versionResponse.modifiedUser = recentVersion.body.data.attributes.lastModifiedUserName;
-          versionResponse.modifiedAt = moment(recentVersion.body.data.attributes.lastModifiedTime).format('LLLL');
+          versionResponse.modifiedAt = timezone.tz(recentVersion.body.data.attributes.lastModifiedTime,timezone.tz.guess() ).format('LLLL');
           
           if(versionResponse.update != '' && versionResponse.update != undefined) callback(versionResponse, res);          
           
@@ -251,6 +254,8 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
                 versionResponse.profileImage = user.body.profileImages.sizeX40;
                 versionResponse.userName = user.body.userName;        
                 versionResponse.emailId = user.body.emailId; 
+                versionResponse.scannedAt=timezone.tz(moment(),timezone.tz.guess()).format('LLLL');
+                console.log( versionResponse.scannedAt);
                 if(versionResponse.createdUser != '' && versionResponse.createdUser != undefined){
                     var scanToDb = new scanDetails({
                         itemId: scannedItemId,
@@ -259,7 +264,8 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
                         userName: versionResponse.userName,
                         emailId: versionResponse.emailId,
                         currentVersion: versionResponse.currentVersion,
-                        latestVersion: versionResponse.latestVersion
+                        latestVersion: versionResponse.latestVersion,
+                        scannedAt:versionResponse.scannedAt
                     })
                 //save scan Details
                     scanToDb.save(function(err) {
@@ -275,7 +281,7 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
     })
 }
 router.carnival = function getUserInformation(tokenSession, itemId, projectId, scannedVersion, latestVersion, callback, res){
-    scanDetails.find({itemId:itemId, projectId:projectId},{itemId:0, projectId:0, _id:0, currentVersion:0,__v:0 }).sort({scannedAt:-1}).exec( function(err, users) {
+    scanDetails.find({itemId:itemId, projectId:projectId},{itemId:0, projectId:0, _id:0, __v:0 }).sort({scannedAt:-1}).exec( function(err, users) {
       if (err) throw err;
       callback(users, res);
     });
