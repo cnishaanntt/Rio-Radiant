@@ -8,6 +8,7 @@ This application demonstrates how to embed QR markups on your BIM360 files.  The
 
 ### Live version
 
+Live version: https://rio-radiant.herokuapp.com
 Video: [Youtube](https://www.youtube.com/watch?v=OL0fOJl_BAM)
 
 # Setup
