@@ -1,9 +1,7 @@
 
 # Rio-Radiant
 
-# QR code
-
-QR markup code
+QR markup code for Autodesk cloud
 
 # Description
 
