@@ -40,7 +40,7 @@ doce.get('/getusers',  function (req, res) {
    callback = function (data,res){ 
        res.render('accessedUser', {json:data});
     } 
-    dm.carnival(tokenSession, req.query.itemId, req.query.projectId, req.query.scannedVersion, req.query.latestVersionThen, callback, res);
+    dm.carnival(tokenSession, req.query.itemId, req.query.projectId, callback, res);
 });
 
 module.exports = doce;
