@@ -157,16 +157,31 @@ function getFolderContents(projectId, folderId, tokenSession, res) {
     .then(function (folderContents) {
       var folderItemsForTree = [];
       folderContents.body.data.forEach(function (item) {
-
         var displayName = item.attributes.displayName == null ? item.attributes.name : item.attributes.displayName;
-        if (displayName !== '') { // BIM 360 Items with no displayName also don't have storage, so not file to transfer
-          folderItemsForTree.push(prepareItemForTree(
-            item.links.self.href,
-            displayName,
-            item.type,
-            true
-          ));
-        }
+          // pdf page where qr needs to be embedded
+        var viewableExtensions =['3dm', '3ds', 'asm', 'catpart', 'catproduct', 'cgr', 'collaboration', 'dae', 'dgn', 'dlv3', 'dwf', 'dwfx', 'dwg', 'dwt', 'dxf', 'emodel', 'exp', 'f3d', 'fbx', 'g', 'gbxml', 'glb', 'gltf', 'iam', 'idw', 'ifc', 'ige', 'iges', 'igs', 'ipt', 'iwm', 'jt', 'max', 'model', 'neu', 'nwc', 'nwd', 'obj', 'prt', 'psmodel', 'rvt', 'sab', 'sat', 'session', 'skp',  'sldasm', 'sldprt', 'smb', 'smt', 'ste', 'step', 'stl', 'stla', 'stlb', 'stp', 'stpz', 'wire', 'x_b', 'x_t', 'xas', 'xpr', 'pdf'];
+           if(displayName !== ''){
+               var fileExtension=displayName.split('.');
+               fileExtension=fileExtension[fileExtension.length-1];                   
+                  for (var i = 0; i < viewableExtensions.length; i++) {
+                      if((fileExtension == viewableExtensions[i])&& (item.type == 'items')){ 
+                          folderItemsForTree.push(prepareItemForTree(
+                            item.links.self.href,
+                            displayName,
+                            item.type,
+                            true
+                        ));
+                      }
+                  }                      
+                      if(item.type != 'items'){ 
+                          folderItemsForTree.push(prepareItemForTree(
+                            item.links.self.href,
+                            displayName,
+                            item.type,
+                            true
+                        ));
+                      }
+            }
       });
       res.json(folderItemsForTree);
     })
@@ -277,7 +292,7 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
             console.log(err);
     })
 }
-router.carnival = function getUserInformation(tokenSession, itemId, projectId, scannedVersion, latestVersion, callback, res){
+router.carnival = function getUserInformation(tokenSession, itemId, projectId, callback, res){
     scanDetails.find({itemId:itemId, projectId:projectId},{itemId:0, projectId:0, _id:0, __v:0 }).sort({scannedAt:-1}).exec( function(err, users) {
       if (err) throw err;
       callback(users, res);
