@@ -86,8 +86,10 @@ function qrImageShow(){
      $('#qrDocument').show();
      $('#dataManagementHubs').show();
      $('#toolbar-QRPrintTool').show();
-     $('#toolbar-QRShowTool').hide();
-    
+     $('#toolbar-QRShowTool').hide();    
+}
+function getUsers(){
+   window.location.replace("https://"+window.location.host+'/qr/getusers/?'+urlString());    
 }
 
 
