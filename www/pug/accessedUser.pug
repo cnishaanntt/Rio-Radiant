@@ -27,34 +27,39 @@ html(lang='en')
                         li  
                             div(class='row ')
                                 div(class='col-sm-2 btn-center')
-                                    a(class='btn btn-basic') #[i(class='fa fa-smile-o col-sm-2 hidden-sm hidden-xs', aria-hidden='true')]
+                                    a(class='btn btn-basic') #[i(class='fa fa-smile-o col-sm-1 col-md-1 hidden-sm hidden-xs', aria-hidden='true')]
                                 div(class='col-sm-2 btn-center')
-                                    a(class='btn btn-basic') #[i(class='fa fa-user col-sm-2 hidden-xs', aria-hidden='true')]
+                                    a(class='btn btn-basic') #[i(class='fa fa-user col-sm-3 col-md-2 hidden-xs', aria-hidden='true')]
                                 div(class='col-sm-2 btn-center')
                                     a(class='btn btn-basic') #[i(class='fa fa-envelope-open-o col-sm-2 hidden-xs', aria-hidden='true')]
                                 div(class='col-sm-1 btn-center')
-                                    a(class='btn btn-basic') #[i(class='fa fa-eye col-sm-2 hidden-xs', aria-hidden='true')]
+                                    a(class='btn btn-basic') #[i(class='fa fa-eye col-sm-1 hidden-xs', aria-hidden='true')]
                                 div(class='col-sm-1 btn-center')
-                                    a(class='btn btn-basic') #[i(class='fa fa-free-code-camp col-sm-2 hidden-xs', aria-hidden='true')]
+                                    a(class='btn btn-basic') #[i(class='fa fa-free-code-camp col-sm-1 hidden-xs', aria-hidden='true')]
                                 div(class='col-sm-4 btn-center')
-                                    a(class='btn btn-basic') #[i(class='fa fa-clock-o col-sm-2 hidden-xs', aria-hidden='true')]
+                                    a(class='btn btn-basic') #[i(class='fa fa-clock-o col-sm-4 hidden-xs', aria-hidden='true')]
          
                                 li
                                     each v, k in json
                                         div(class='row')
                                             each val, key in {v}
-                                                div(class='col-sm-2 btn-center')
-                                                    a(class='btn btn-basic')   #[img(src=val.profileImage, alt='Smiley face',height='30', class='iconimg hidden-sm img-circle')]
-                                                div(class='col-sm-2 btn-center')
+                                                div(class='col-sm-1 col-md-2 btn-center')
+                                                    a(class='btn btn-basic')   #[img(src=val.profileImage, alt='Smiley face', height='30', class='iconimg hidden-sm img-circle')]
+                                                div(class='col-sm-3 col-md-2 btn-center')
+                                                    a(class='btn btn-basic hidden-sm hidden-md hidden-lg hidden-xl')   #[b User Name]
                                                     a(class='btn btn-basic')   #{val.userName}
                                                 div(class='col-sm-2 btn-center')
+                                                    a(class='btn btn-basic hidden-sm hidden-md hidden-lg hidden-xl')   #[b Email]
                                                     a(class='btn btn-basic')   #{val.emailId}
                                                 div(class='col-sm-1 btn-center')
+                                                    a(class='btn btn-basic hidden-sm hidden-md hidden-lg hidden-xl')   #[b Current version]
                                                     a(class='btn btn-basic')   #{val.currentVersion}
                                                 div(class='col-sm-1 btn-center')
+                                                    a(class='btn btn-basic hidden-sm hidden-md hidden-lg hidden-xl')   #[b Latest version]
                                                     a(class='btn btn-basic')   #{val.latestVersion}
                                                 div(class='col-sm-4 btn-center')
-                                                    a(class='btn btn-basic')   #{val.scannedAt}
+                                                    a(class='btn btn-basic hidden-sm hidden-md hidden-lg hidden-xl')   #[b Time]
+                                                    a(class='btn btn-basic')   #{val.scannedAt.toLocaleString()}
                                                           
 
 
