@@ -126,8 +126,10 @@ router.get('/api/forge/callback/oauth', function (req, res) {
 function respondWithError(res, error) {
   if (error.statusCode) {
     res.status(error.statusCode).end(error.statusMessage);
+    res.redirect('/');
   } else {
     res.status(500).end(error.message);
+    res.redirect('/');
   }
 }
 
