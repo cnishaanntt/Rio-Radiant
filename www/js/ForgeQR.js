@@ -93,7 +93,7 @@ function qrImageShow(){
     
 }
 function getUsers(){
-   window.location.replace("http://"+window.location.host+'/qr/getusers/?'+urlString());    
+   window.location.replace("https://"+window.location.host+'/qr/getusers/?'+urlString());    
 }
 
 
