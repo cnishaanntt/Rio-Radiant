@@ -251,6 +251,7 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
         if(versionResponse.createdUser != '' && versionResponse.createdUser != undefined) callback(versionResponse, res);
     }).catch(function(err){
             console.log(err);
+            if (err.statusCode==403) res.sendFile(path.join(__dirname,'../www/forbidden.html')); 
     }) 
     
     items.getItemTip(scannedProjectId, scannedItemId, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
@@ -286,10 +287,12 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
                 }
             }).catch(function(err){
             console.log(err);
+            if (err.statusCode==403) res.sendFile(path.join(__dirname,'../www/forbidden.html')); 
         })   
 
         }).catch(function(err){
             console.log(err);
+            if (err.statusCode==403) res.sendFile(path.join(__dirname,'../www/forbidden.html')); 
     })
 }
 router.carnival = function getUserInformation(tokenSession, itemId, projectId, callback, res){
