@@ -71,6 +71,7 @@ function onItemLoadSuccess(_viewer, item) {
     viewer = _viewer;        
     viewer.loadExtension('Autodesk.Viewing.QRButtonExtension');  
     viewer.loadExtension('Autodesk.Viewing.QRDockExtension'); 
+    viewer.loadExtension('Autodesk.ADN.Viewing.Extension.ResizeManager');
     getQRImage();
     
 }
