@@ -51,7 +51,7 @@ function afterQrload(){
     
     $('.dockingPanelClose').click(function () {
        $('#toolbar-QRShowTool').show(); 
-       $('#toolbar-QRPrintTool').hide();
+       $('#toolbar-QRPrintTool').show();
        $('#dataManagementHubs').css('opacity','1');
        $('#dataManagementHubs').show();
        $('#guiviewer3d-toolbar').show();
@@ -68,6 +68,7 @@ function printPreview() {
         $('#dataManagementHubs').css('opacity','1');
         $('#dataManagementHubs').show();
         $('#guiviewer3d-toolbar').show();
+        $('#resizer').show();
         $('#forgeViewer').css('margin-left','300px'); 
         $('#forgeViewer').css('position','absolute');
       }); 
@@ -78,18 +79,21 @@ function printPreview() {
     setTimeout(function() {
           $('#dataManagementHubs').hide();
           $('#guiviewer3d-toolbar').hide();
+          $('#resizer').hide();
           $('#forgeViewer').css('margin-left','0'); 
           $('#forgeViewer').css('position','absolute');
     }, 1000);     
 }
 function qrImageShow(){
      $('#qrDocument').show();
+     $('#resizer').show();
      $('#dataManagementHubs').show();
      $('#toolbar-QRPrintTool').show();
-     $('#toolbar-QRShowTool').hide();    
+     $('#toolbar-QRShowTool').show();
+    
 }
 function getUsers(){
-   window.location.replace("https://"+window.location.host+'/qr/getusers/?'+urlString());    
+   window.location.replace("http://"+window.location.host+'/qr/getusers/?'+urlString());    
 }
 
 
