@@ -26,6 +26,8 @@ var fileType;
 var options = {};
 var token = '';
 var documentId;
+var loadNextModel;
+var indexViewable=0;
 
 
 
@@ -60,6 +62,12 @@ function onDocumentLoadSuccess(doc) {
 
   // Choose any of the available viewables
   viewerApp.selectItem(viewables[0].data, onItemLoadSuccess, onItemLoadFail);
+  
+   loadNextModel = function() {
+    // Next viewable index. Loop back to 0 when overflown.
+    indexViewable = (indexViewable + 1) % viewables.length;
+    viewerApp.selectItem(viewables[indexViewable].data, onItemLoadSuccess, onItemLoadFail);
+}
 
 }
 
