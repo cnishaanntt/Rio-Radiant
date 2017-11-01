@@ -20,8 +20,8 @@ function createDockPanel() {
     _dockPanel.closer.style.opacity = 0;
     _dockPanel.container.style.border.opacity = 0;
     
-    _dockPanel.container.style.bottom = "320px";
-    _dockPanel.container.style.right = "120px";
+    _dockPanel.container.style.bottom = "350px";
+    _dockPanel.container.style.right = "200px";
     
 
     _dockPanel.container.style.width = "auto";
