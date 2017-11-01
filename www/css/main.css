@@ -115,6 +115,13 @@ a {
     background-position: center;
 }
 
+.UserListButton {
+    background-image: url(/img/user.png);
+    background-size: 24px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .btn-white{
     color:white;
 }
