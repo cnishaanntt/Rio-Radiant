@@ -106,7 +106,7 @@ function prepareDataManagementTree() {
         'icon': 'glyphicon glyphicon-folder-open'
       },
       'versions': {
-        'icon': 'glyphicon glyphicon-time'
+        'icon': 'glyphicon glyphicon-leaf'
       }
     },
     "plugins": 
