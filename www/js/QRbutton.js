@@ -39,11 +39,11 @@ QRButtonExtension.prototype.load = function () {
     toolbarNextButton.setToolTip('Next');
     
     var toolbarUserButton = new Autodesk.Viewing.UI.Button('toolbar-UserTool');
-    toolbarNextButton.onClick = function (e) {
+    toolbarUserButton.onClick = function (e) {
       getUsers();
     };
-    toolbarNextButton.addClass('NextButton');
-    toolbarNextButton.setToolTip('List');
+    toolbarUserButton.addClass('NextButton');
+    toolbarUserButton.setToolTip('List');
       
     var toolbarShowButton = new Autodesk.Viewing.UI.Button('toolbar-QRShowTool');
     toolbarShowButton.onClick = function (e) {
