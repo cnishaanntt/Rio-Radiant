@@ -54,7 +54,7 @@ QRDockExtension.prototype.load = function () {
 
 QRDockExtension.prototype.unload = function () {
     _dockPanel.setVisible(false);
-    alert('QRDockExtension is now unloaded!');
+    //alert('QRDockExtension is now unloaded!');
     return true;
 };
 
