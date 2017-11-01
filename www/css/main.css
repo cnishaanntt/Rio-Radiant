@@ -108,8 +108,8 @@ a {
     background-position: center;
 }
 
-.QRcodeUserButton {
-    background-image: url(/img/user.png);
+.NextButton {
+    background-image: url(/img/next.png);
     background-size: 24px;
     background-repeat: no-repeat;
     background-position: center;
