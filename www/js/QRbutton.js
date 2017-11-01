@@ -37,6 +37,13 @@ QRButtonExtension.prototype.load = function () {
     };
     toolbarNextButton.addClass('NextButton');
     toolbarNextButton.setToolTip('Next');
+    
+    var toolbarUserButton = new Autodesk.Viewing.UI.Button('toolbar-UserTool');
+    toolbarNextButton.onClick = function (e) {
+      getUsers();
+    };
+    toolbarNextButton.addClass('NextButton');
+    toolbarNextButton.setToolTip('List');
       
     var toolbarShowButton = new Autodesk.Viewing.UI.Button('toolbar-QRShowTool');
     toolbarShowButton.onClick = function (e) {
@@ -50,7 +57,7 @@ QRButtonExtension.prototype.load = function () {
     this.subToolbar.addControl(toolbarPrintButton);
     this.subToolbar.addControl(toolbarShowButton);
     this.subToolbar.addControl(toolbarNextButton);
-    
+    this.subToolbar.addControl(toolbarUserButton);
 
     _viewer.toolbar.addControl(this.subToolbar);
   };
