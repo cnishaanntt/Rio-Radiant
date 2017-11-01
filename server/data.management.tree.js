@@ -203,9 +203,10 @@ function getVersions(projectId, itemId, tokenSession,  res) {
         var designId = (version.relationships != null && version.relationships.derivatives != null ? version.relationships.derivatives.data.id : null);
         /*Version details*/
         var versionDetails = 'projectId='+ projectId + '&itemId=' + itemId + '&version='+ version.attributes.versionNumber;
+        var versionNumber = version.attributes.versionNumber;
         versionsForTree.push(prepareItemForTree(
           designId,
-          dateFormated + ' by ' + version.attributes.lastModifiedUserName,
+          'v'+versionNumber+' '+dateFormated + ' by ' + version.attributes.lastModifiedUserName,
           'versions',
           false,
           fileType,
@@ -246,7 +247,7 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
         versionResponse.designId = versionDesignId[0].id;
         
         /* Check updates  */
-        versionResponse.update = (currentVersion < latestVersion) ? ((latestVersion - currentVersion > 1)?('There are '+ (latestVersion - currentVersion) + ' version updates ' ):('There is a version update' )) : ('Current version is latest');
+        versionResponse.update = (currentVersion < latestVersion) ? ((latestVersion - currentVersion > 1)?('There are '+ (latestVersion - currentVersion) + ' version updates ' ):('There is a version update' )) : ((currentVersion > latestVersion)?'You are not supposed to trick QR scanner :)':'Current version is latest');
         versionResponse.latestVersion = latestVersion;
         if(versionResponse.createdUser != '' && versionResponse.createdUser != undefined) callback(versionResponse, res);
     }).catch(function(err){
@@ -270,7 +271,12 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
                 versionResponse.profileImage = user.body.profileImages.sizeX40;
                 versionResponse.userName = user.body.userName;        
                 versionResponse.emailId = user.body.emailId;
-                if(versionResponse.createdUser != '' && versionResponse.createdUser != undefined && versionResponse.latestVersion != '' && versionResponse.latestVersion != undefined){
+               if ( versionResponse.currentVersion > versionResponse.latestVersion){
+                    versionResponse.isVersion = false
+                }else{
+                    versionResponse.isVersion = true
+                }                
+                if(versionResponse.createdUser != '' && versionResponse.createdUser != undefined && versionResponse.latestVersion != '' && versionResponse.latestVersion != undefined && versionResponse.isVersion){
                     var scanToDb = new scanDetails({
                         itemId: scannedItemId,
                         projectId: scannedProjectId,
