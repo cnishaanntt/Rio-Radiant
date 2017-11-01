@@ -31,12 +31,12 @@ QRButtonExtension.prototype.load = function () {
     toolbarPrintButton.addClass('QRcodePrintButton');
     toolbarPrintButton.setToolTip('Print Preview');
         
-    //var toolbarUserButton = new Autodesk.Viewing.UI.Button('toolbar-QRUserTool');
-    //toolbarUserButton.onClick = function (e) {
-    //  getUsers();
-   // };
-   // toolbarUserButton.addClass('QRcodeUserButton');
-   // toolbarUserButton.setToolTip('List');
+    var toolbarNextButton = new Autodesk.Viewing.UI.Button('toolbar-NextTool');
+    toolbarNextButton.onClick = function (e) {
+      loadNextModel();
+    };
+    toolbarNextButton.addClass('NextButton');
+    toolbarNextButton.setToolTip('Next');
       
     var toolbarShowButton = new Autodesk.Viewing.UI.Button('toolbar-QRShowTool');
     toolbarShowButton.onClick = function (e) {
@@ -48,8 +48,8 @@ QRButtonExtension.prototype.load = function () {
     // Grouping Button
     this.subToolbar = new Autodesk.Viewing.UI.ControlGroup('qrTools');
     this.subToolbar.addControl(toolbarPrintButton);
-    //this.subToolbar.addControl(toolbarUserButton);
     this.subToolbar.addControl(toolbarShowButton);
+    this.subToolbar.addControl(toolbarNextButton);
     
 
     _viewer.toolbar.addControl(this.subToolbar);
@@ -61,7 +61,10 @@ QRButtonExtension.prototype.load = function () {
 
 
 QRButtonExtension.prototype.unload = function () {
-  alert('QRButtonExtension is now unloaded!');
+  //alert('QRButtonExtension is now unloaded!');
+  $('#qrDocument').remove();
+  $('#qrImage').remove();
+  $('#resizer').remove();
   return true;
 };
 
