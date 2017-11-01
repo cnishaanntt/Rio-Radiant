@@ -1,40 +1,43 @@
 extends layout
 
 block content
-    div(class='panel-group' )        
-        div(class='panel panel-default') 
-            div(class='panel panel-heading')
-                p #[i(class='fa fa-book fa-2x col-sm-2', aria-hidden='true')]
-                    a(class='btn btn-basic btn-white' href='/qr/getusers/?projectId='+locals.projectId+'&itemId='+locals.itemId+'&scannedVersion='+locals.currentVersion+'&latestVersionThen='+locals.latestVersion
-                    )  #[b #{itemName}] 
-            div(class='panel panel-body')
-                ul
-                    li
-                        div(class='row')
-                            div(class='btn-group col-sm-3')
-                                a(class='btn btn-basic')     #[i(class='fa fa-user-o fa-1x', aria-hidden='true')] Creator
-                            div(class='col-sm-9')
-                                 a(class='btn btn-basic')    #{createdUser}
-                            
-                    li
-                        div(class='row')
-                            div(class='btn-group col-sm-3')
-                                a(class='btn btn-basic')     #[i(class='fa fa-refresh fa-1x', aria-hidden='true')] Detail
-                            div(class='col-sm-9')
-                                a(class='btn btn-basic')     #{update}
-                            
-                    unless update == 'Current version is latest'
-                        
+    if update == 'You are not supposed to trick QR scanner :)'
+        p Stay Curious :) #[i(class='fa fa-rocket fa-1x iconimg', aria-hidden='true')] We will make a better world #[i(class='fa fa-globe fa-1x iconimg', aria-hidden='true')]
+    unless update == 'You are not supposed to trick QR scanner :)'
+        div(class='panel-group' )        
+            div(class='panel panel-default') 
+                div(class='panel panel-heading')
+                    p #[i(class='fa fa-book fa-2x col-sm-2', aria-hidden='true')]
+                        a(class='btn btn-basic btn-white' href='/qr/getusers/?projectId='+locals.projectId+'&itemId='+locals.itemId
+                        )  #[b #{itemName}] 
+                div(class='panel panel-body')
+                    ul
                         li
                             div(class='row')
                                 div(class='btn-group col-sm-3')
-                                    a(class='btn btn-basic')     #[i(class='fa fa-user-circle-o fa-1x', aria-hidden='true')] Updated by
+                                    a(class='btn btn-basic')     #[i(class='fa fa-user-o fa-1x', aria-hidden='true')] Creator
                                 div(class='col-sm-9')
-                                    a(class='btn btn-basic')     #{modifiedUser}
+                                     a(class='btn btn-basic')    #{createdUser}
+
                         li
                             div(class='row')
                                 div(class='btn-group col-sm-3')
-                                    a(class='btn btn-basic')     #[i(class='fa fa-clock-o fa-1x', aria-hidden='true')] Updated on
-                                div(class='col-sm-9')  
-                                     a(class='btn btn-basic')     #{modifiedAt.toLocaleString()}
+                                    a(class='btn btn-basic')     #[i(class='fa fa-refresh fa-1x', aria-hidden='true')] Detail
+                                div(class='col-sm-9')
+                                    a(class='btn btn-basic')     #{update}
+
+                        unless update == 'Current version is latest' 
+
+                            li
+                                div(class='row')
+                                    div(class='btn-group col-sm-3')
+                                        a(class='btn btn-basic')     #[i(class='fa fa-user-circle-o fa-1x', aria-hidden='true')] Updated by
+                                    div(class='col-sm-9')
+                                        a(class='btn btn-basic')     #{modifiedUser}
+                            li
+                                div(class='row')
+                                    div(class='btn-group col-sm-3')
+                                        a(class='btn btn-basic')     #[i(class='fa fa-clock-o fa-1x', aria-hidden='true')] Updated on
+                                    div(class='col-sm-9')  
+                                        a(class='btn btn-basic')     #{modifiedAt.toLocaleString()}
                             
