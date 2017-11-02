@@ -80,8 +80,8 @@ function onItemLoadSuccess(_viewer, item) {
     viewer.loadExtension('Autodesk.Viewing.QRButtonExtension');  
     viewer.loadExtension('Autodesk.Viewing.QRDockExtension'); 
     viewer.loadExtension('Autodesk.ADN.Viewing.Extension.ResizeManager');
-    getQRImage();
-    
+    viewer.loadExtension('Autodesk.Sample.Navigator');
+    getQRImage();    
 }
 
 function onItemLoadFail(errorCode) { 
