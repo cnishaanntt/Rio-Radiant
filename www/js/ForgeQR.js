@@ -90,6 +90,7 @@ function printPreview() {
     setTimeout(function() {
           $('#dataManagementHubs').hide();
           $('#guiviewer3d-toolbar').hide();
+          $('#NavigatorPanel').hide();
           $('#resizer').hide();
           $('#forgeViewer').css('margin-left','0'); 
           $('#forgeViewer').css('position','absolute');
