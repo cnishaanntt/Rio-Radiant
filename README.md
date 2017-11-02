@@ -31,6 +31,7 @@ Mac OSX/Linux (Terminal)
     npm install
     export FORGE_CLIENT_ID=<<YOUR CLIENT ID FROM FORGE DEVELOPER PORTAL>>
     export FORGE_CLIENT_SECRET=<<YOUR FORGE CLIENT SECRET>>
+    export MONGODB_URL=<<YOUR MONGO DB URL>>
     npm run dev
 
 Windows (use <b>Node.js command line</b> from Start menu)
@@ -38,6 +39,7 @@ Windows (use <b>Node.js command line</b> from Start menu)
     npm install
     set FORGE_CLIENT_ID=<<YOUR CLIENT ID FROM FORGE DEVELOPER PORTAL>>
     set FORGE_CLIENT_SECRET=<<YOUR FORGE CLIENT SECRET>>
+    set MONGODB_URL=<<YOUR MONGO DB URL>
     npm run dev
 
 Open the browser: [http://localhost:3000](http://localhost:3000).
