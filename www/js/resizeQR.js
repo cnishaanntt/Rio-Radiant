@@ -198,17 +198,17 @@ Autodesk.ADN.Viewing.Extension.ResizeManager = function (viewer, options) {
       "QR Resize",
       {shadow:true});
 
-    this.container.style.top = "0px";
-    this.container.style.left = "0px";
+    this.container.style.top = "10px";
+    this.container.style.left = "10px";
 
     this.container.style.width = "150px";
     this.container.style.height = "100px";
     this.container.style.background = "white";
-    this.container.style.opacity = "0.9";
+    this.container.style.opacity = "1";
     this.title.style.background = "orange";
     this.title.style.border = "white";
     
-    this.title.style.opacity = "0.9";
+    this.title.style.opacity = "1";
     this.closer.style.opacity = 0;
     this.container.style.border.opacity = 0;
 
