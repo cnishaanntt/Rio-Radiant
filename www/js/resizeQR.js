@@ -40,7 +40,7 @@ Autodesk.ADN.Viewing.Extension.ResizeManager = function (viewer, options) {
       _panel.setVisible(true);
     }
 
-    console.log('Autodesk.ADN.Viewing.Extension.ResizeManager loaded');
+    //console.log('Autodesk.ADN.Viewing.Extension.ResizeManager loaded');
 
     return true;
   };
@@ -69,7 +69,7 @@ Autodesk.ADN.Viewing.Extension.ResizeManager = function (viewer, options) {
       }
     }
 
-    console.log('Autodesk.ADN.Viewing.Extension.ResizeManager unloaded');
+    //console.log('Autodesk.ADN.Viewing.Extension.ResizeManager unloaded');
 
     return true;
   };
@@ -298,10 +298,7 @@ Autodesk.ADN.Viewing.Extension.ResizeManager = function (viewer, options) {
         
       var size = parseInt($('#' + baseId + 'width').val());
       size = (isNaN(size) ? propertyPanel.width : size);
-
-      console.log(size);
-
-      
+      //console.log(size);      
            if( !propertyPanel ){
                 alert('QR code is not attached');
                 return;
