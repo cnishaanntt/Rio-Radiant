@@ -31,7 +31,7 @@ Autodesk.Sample.Navigator = function (viewer, options) {
           _panel.container.style.opacity = "1";
           _panel.title.style.background = "orange";
           _panel.title.style.opacity = "1";
-          _panel.closer.style.opacity = 0;
+          _panel.closer.style.opacity = "1";
 
           var div = document.createElement('div');
           div.style.margin = '5px';
