@@ -19,6 +19,17 @@
 if (!window.jQuery) alert('jQuery is required for this sample');
 function getQRImage(){
     afterQrload();
+    if(urlString()=="" || urlString()==undefined){
+        $('#qrDocument').hide();
+        $('#resizer').hide();
+        $('#toolbar-UserTool').hide();
+        $('#toolbar-ShowTool').hide();
+    }else{
+        $('#qrDocument').show();
+        $('#resizer').show();
+        $('#toolbar-UserTool').show();
+        $('#toolbar-ShowTool').show();
+    }    
     jQuery.ajax({
     url: '/qrEmbed?' + new Date().getTime(),
     data: urlString(),
