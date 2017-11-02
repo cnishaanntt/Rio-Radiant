@@ -57,8 +57,10 @@ QRButtonExtension.prototype.load = function () {
     this.subToolbar.addControl(toolbarUserButton);
     this.subToolbar.addControl(toolbarPrintButton);
     this.subToolbar.addControl(toolbarShowButton);
-    this.subToolbar.addControl(toolbarNextButton);
-    
+    viewables = viewerApp.bubble.search({'type': 'geometry', 'role': '2d'});
+    if(viewables!=null) {
+      this.subToolbar.addControl(toolbarNextButton);
+    }
 
     _viewer.toolbar.addControl(this.subToolbar);
   };
