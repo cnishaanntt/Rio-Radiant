@@ -136,6 +136,18 @@ a {
     justify-content: center;
 }
 
+.toolbarNavigatorButton {
+    background-image: url(/img/Navigator.png);
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.PCitem{
+    cursor: pointer;
+    background: none;
+    color: #FFFFFF;
+}
 
 @keyframes fadeout {
     from {opacity: 1;}
