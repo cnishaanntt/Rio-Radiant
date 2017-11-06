@@ -115,7 +115,7 @@ a {
     background-position: center;
 }
 
-.UserListButton {
+.UserButton {
     background-image: url(/img/user.png);
     background-size: 24px;
     background-repeat: no-repeat;
@@ -173,11 +173,3 @@ a {
         z-index:0;
     }
 }
-
-
-
-    
-    
-    
-
-.
