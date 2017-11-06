@@ -32,6 +32,8 @@ Mac OSX/Linux (Terminal)
     export FORGE_CLIENT_ID=<<YOUR CLIENT ID FROM FORGE DEVELOPER PORTAL>>
     export FORGE_CLIENT_SECRET=<<YOUR FORGE CLIENT SECRET>>
     export MONGODB_URL=<<YOUR MONGO DB URL>>
+    export GMAIL_ID=<<YOUR GMAIL SERVICE ACCOUNT ID>>
+    export GMAIL_PWD=<<YOUR GMAIL SERVICE ACCOUNT SECRET>>
     npm run dev
 
 Windows (use <b>Node.js command line</b> from Start menu)
@@ -39,7 +41,9 @@ Windows (use <b>Node.js command line</b> from Start menu)
     npm install
     set FORGE_CLIENT_ID=<<YOUR CLIENT ID FROM FORGE DEVELOPER PORTAL>>
     set FORGE_CLIENT_SECRET=<<YOUR FORGE CLIENT SECRET>>
-    set MONGODB_URL=<<YOUR MONGO DB URL>
+    set MONGODB_URL=<<YOUR MONGO DB URL>>
+    set GMAIL_ID=<<YOUR GMAIL SERVICE ACCOUNT ID>>
+    set GMAIL_PWD=<<YOUR GMAIL SERVICE ACCOUNT SECRET>>    
     npm run dev
 
 Open the browser: [http://localhost:3000](http://localhost:3000).
