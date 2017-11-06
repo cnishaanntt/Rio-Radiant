@@ -1,6 +1,15 @@
 // token handling in session
 var token = require('./token');
 var scanDetails =require('./scan.details');
+var qrDetails =require('./qr.details');
+var userDetails =require('./user.details');
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
+var config = require('./config');
+var gmail_id =  config.credentials.gmail_id;
+var gmail_pwd =  config.credentials.gmail_pwd;
+
+
 
 // web framework
 var express = require('express');
@@ -14,12 +23,11 @@ var app = express();
 app.use(express.static('../index.html'));
 app.locals.moment = require('moment');
 
+
 var forgeSDK = require('forge-apis');
 var versionResponse = {};
 var old_url;
-
-
-
+router.sendName="";
 
 router.get('/dm/getTreeNode', function (req, res) {
    tokenSession = new token(req.session);
@@ -147,7 +155,7 @@ function getHubs(tokenSession, res) {
       res.json(hubsForTree);
     })
     .catch(function (error) {
-      console.log(error);
+      console.log('from Hub' + error);
       res.status(500).end();
     });
 }
@@ -161,7 +169,7 @@ function getFolderContents(projectId, folderId, tokenSession, res) {
           // pdf page where qr needs to be embedded
         var viewableExtensions =['3dm', '3ds', 'asm', 'catpart', 'catproduct', 'cgr', 'collaboration', 'dae', 'dgn', 'dlv3', 'dwf', 'dwfx', 'dwg', 'dwt', 'dxf', 'emodel', 'exp', 'f3d', 'fbx', 'g', 'gbxml', 'glb', 'gltf', 'iam', 'idw', 'ifc', 'ige', 'iges', 'igs', 'ipt', 'iwm', 'jt', 'max', 'model', 'neu', 'nwc', 'nwd', 'obj', 'prt', 'psmodel', 'rvt', 'sab', 'sat', 'session', 'skp',  'sldasm', 'sldprt', 'smb', 'smt', 'ste', 'step', 'stl', 'stla', 'stlb', 'stp', 'stpz', 'wire', 'x_b', 'x_t', 'xas', 'xpr', 'pdf'];
            if(displayName !== ''){
-               var fileExtension=displayName.split('.');
+               fileExtension=displayName.split('.');
                fileExtension=fileExtension[fileExtension.length-1];                   
                   for (var i = 0; i < viewableExtensions.length; i++) {
                       if((fileExtension == viewableExtensions[i])&& (item.type == 'items')){ 
@@ -202,8 +210,27 @@ function getVersions(projectId, itemId, tokenSession,  res) {
         var dateFormated = (versions.body.data.length > 1 || days > 7 ? lastModifiedTime.format('MMM D, YYYY, h:mm a') : lastModifiedTime.fromNow());
         var designId = (version.relationships != null && version.relationships.derivatives != null ? version.relationships.derivatives.data.id : null);
         /*Version details*/
-        var versionDetails = 'projectId='+ projectId + '&itemId=' + itemId + '&version='+ version.attributes.versionNumber;
         var versionNumber = version.attributes.versionNumber;
+        var versionDetails = 'projectId='+ projectId + '&itemId=' + itemId + '&version='+ version.attributes.versionNumber;
+		
+		var qrToDb = new qrDetails({
+			urn: designId,
+			name: version.attributes.name,
+			displayName: version.attributes.displayName,
+			createTime: version.attributes.createTime,
+			createUserId: version.attributes.createUserId,
+			createUserName: version.attributes.createUserName,
+			lastModifiedTime: version.attributes.lastModifiedTime,
+			lastModifiedUserId: version.attributes.lastModifiedUserId,
+			lastModifiedUserName: version.attributes.lastModifiedUserName,
+			versionNumber:  version.attributes.versionNumber,
+			itemId:  itemId,
+			projectId: projectId
+		})
+		//save qr Details
+			qrToDb.save(function(err) {
+			  if (err) return true;
+			});  
         versionsForTree.push(prepareItemForTree(
           designId,
           'v'+versionNumber+' '+dateFormated + ' by ' + version.attributes.lastModifiedUserName,
@@ -251,10 +278,9 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
         versionResponse.latestVersion = latestVersion;
         if(versionResponse.createdUser != '' && versionResponse.createdUser != undefined) callback(versionResponse, res);
     }).catch(function(err){
-            console.log(err);
-            if (err.statusCode==403) res.sendFile(path.join(__dirname,'../www/forbidden.html')); 
+		errorHandler(err, scannedItemId, scannedProjectId, currentVersion, callback, res);
+		return;
     }) 
-    
     items.getItemTip(scannedProjectId, scannedItemId, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
         .then(function(recentVersion){        
           /* Details of latest version  */
@@ -270,12 +296,13 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
             .then(function(user) {
                 versionResponse.profileImage = user.body.profileImages.sizeX40;
                 versionResponse.userName = user.body.userName;        
-                versionResponse.emailId = user.body.emailId;
-               if ( versionResponse.currentVersion > versionResponse.latestVersion){
+                versionResponse.emailId = user.body.emailId; 
+                if ( versionResponse.currentVersion > versionResponse.latestVersion){
                     versionResponse.isVersion = false
                 }else{
                     versionResponse.isVersion = true
-                }                
+                }
+                
                 if(versionResponse.createdUser != '' && versionResponse.createdUser != undefined && versionResponse.latestVersion != '' && versionResponse.latestVersion != undefined && versionResponse.isVersion){
                     var scanToDb = new scanDetails({
                         itemId: scannedItemId,
@@ -290,29 +317,33 @@ router.studious = function getLatestVersion( tokenSession, scannedItemId, scanne
                     scanToDb.save(function(err) {
                       if (err) throw err;
                     });
+                    
                 }
             }).catch(function(err){
-            console.log(err);
-            if (err.statusCode==403) res.sendFile(path.join(__dirname,'../www/forbidden.html')); 
-        })   
-
-        }).catch(function(err){
-            console.log(err);
-            if (err.statusCode==403) res.sendFile(path.join(__dirname,'../www/forbidden.html')); 
+            	errorHandler(err, scannedItemId, scannedProjectId, currentVersion, callback, res);
+				return;
+        	})
+		}).catch(function(err){
+			errorHandler(err, scannedItemId, scannedProjectId, currentVersion, callback, res);
+			return;
     })
 }
-router.carnival = function getUserInformation(tokenSession, itemId, projectId, callback, res){
+router.carnival = function getUserInformation(req, tokenSession, itemId, projectId, callback, res){  
+	tokenSession = new token(req.session);
+	   if (!tokenSession.isAuthorized()) {
+		req.session.redirectTo=req.originalUrl;    res.sendFile(path.join(__dirname,'../www/signIn.html')); 
+	  }  
     scanDetails.find({itemId:itemId, projectId:projectId},{itemId:0, projectId:0, _id:0, __v:0 }).sort({scannedAt:-1}).exec( function(err, users) {
       if (err) throw err;
       callback(users, res);
     });
 }         
 router.get('/qrEmbed',  function (req, res) {
-
-    tokenSession = new token(req.session);
-    if (!tokenSession.isAuthorized()) {
+   
+	tokenSession = new token(req.session);    
+	if (!tokenSession.isAuthorized()) {
     req.session.redirectTo=req.originalUrl;    res.sendFile(path.join(__dirname,'../www/signIn.html')); 
-  }   
+  	}   
          
     if(req.query.projectId!='' && req.query.projectId!=undefined){        
         var url_string = 'https://'+ req.headers.host + '/qr?projectId='+ req.query.projectId +'&itemId='+ req.query.itemId + '&version=' + req.query.version;
@@ -327,6 +358,83 @@ router.get('/qrEmbed',  function (req, res) {
     }
    
 })
+function errorHandler(err, scannedItemId, scannedProjectId, currentVersion, callback, res ){
+	if (err.statusCode==401){
+		res.sendFile(path.join(__dirname,'../www/signIn.html')); 
+	} else if (err.statusCode==403){
+		qrDetails.find({itemId: scannedItemId, projectId: scannedProjectId, versionNumber: currentVersion}, function(err,qr){
+			callback(qr[0], res);
+		})
+	} else {
+		console.log(err);			   
+	}
+}
+router.get('/email',  function (req, res, tokenSession) {	
+  tokenSession = new token(req.session);
+  if (!tokenSession.isAuthorized()) {
+  	req.session.redirectTo=req.originalUrl;    res.sendFile(path.join(__dirname,'../www/signIn.html')); 
+  }   	
+    var mailer={};	
+	var	userProfile = new forgeSDK.UserProfileApi();	
+	mailer.itemName = req.query.itemName;
+		
+	userDetails.find({ userId:req.query.receiverId}, function(err, user, req, res){
+			mailer.receiverName = user[0].firstName;
+			mailer.receiverEmailId = user[0].emailId;
+			if(mailer.senderName != undefined && mailer.itemName != undefined) email(mailer, res);
+		})
+	
+	userProfile.getUserProfile(tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
+		.then(function(user) {
+			mailer.senderPic = user.body.profileImages.sizeX20;
+			mailer.senderName = user.body.firstName;        
+			mailer.senderEmailId = user.body.emailId; 
+			if(mailer.receiverName != undefined && mailer.itemName != undefined) email(mailer, res);
+		})
+	
+	if(mailer.receiverName != undefined && mailer.senderName != undefined && mailer.itemName != undefined) email(mailer, res);
+	
+})
+
+function email(mailer, res){	
+	// Generate SMTP service account from ethereal.email
+	nodemailer.createTestAccount((err, account) => {
+		if (err) {
+			console.error('Failed to create a testing account. ' + err.message);
+			return process.exit(1);
+		}
+
+    // Create a SMTP transporter object
+    let transporter = nodemailer.createTransport(smtpTransport({
+        host: 'smtp.gmail.com',
+	    port: 587,
+	    secure: false,
+        auth: {
+            user: gmail_id,
+            pass: gmail_pwd
+        }
+    }));
+
+    // Message object
+    let message = {
+        from: mailer.senderEmailId,
+        to: mailer.receiverEmailId,
+        subject:  mailer.itemName + ' - BIM 360 document access✔',
+        text:'Dear '+ mailer.receiverName + ', ' + mailer.senderName +' has requested access to ' + mailer.itemName+ '. Please find the email id:' + mailer.senderEmailId + '. Cheers, Rio-Radiant',
+        html: '<p>Dear '+ mailer.receiverName +', </p><p><i>' + mailer.senderName +'</i> has requested access to <b>' + mailer.itemName+ '</b>.</p><p> Please find the email id: <b>' + mailer.senderEmailId + '</b></p><p> <a href="https://docs.b360.autodesk.com/">BIM 360 docs</a></p><br/><p>Cheers,</p><p>Rio-Radiant</p>'			   
+    };
+
+    transporter.sendMail(message, (err, info) => {
+        if (err) {
+            console.log('Error occurred. ' + err.message);
+            return process.exit(1);
+        }
+
+    });
+});
+		res.render('mailSent', {itemName: mailer.itemName, receiverName:mailer.receiverName, senderPic:mailer.senderPic, senderName:mailer.senderName});
+}
+	
 function prepareItemForTree(_id, _text, _type, _children, _fileType, _fileName) {
   return { id: _id, text: _text, type: _type, children: _children, fileType:_fileType, fileName: _fileName };
 }
