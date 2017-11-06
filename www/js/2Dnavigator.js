@@ -2,9 +2,12 @@ AutodeskNamespace('Autodesk.Sample.Navigator');
 
 Autodesk.Sample.Navigator = function (viewer, options) {
   Autodesk.Viewing.Extension.call(this, viewer, options);
-  viewables = viewerApp.bubble.search({'type': 'geometry', 'role': '2d'});
-  if(viewables!=null) {
-  var _self = this;
+    var _self = this;
+viewables = viewerApp.bubble.search({'type': 'geometry', 'role': '2d'});
+  if(viewables!=null && viewables.length > 1) {
+        
+        
+  
 
   ///////////////////////////////////////////////////////////////////////////
   // load callback
@@ -15,7 +18,9 @@ Autodesk.Sample.Navigator = function (viewer, options) {
     var viewables;
 
     viewables = viewerApp.bubble.search({'type': 'geometry', 'role': '2d'});
-
+     
+      
+     
     createUI = function () {
       // Button 1
       var button1 = new Autodesk.Viewing.UI.Button('toolbarNavigator');
@@ -31,7 +36,7 @@ Autodesk.Sample.Navigator = function (viewer, options) {
           _panel.container.style.opacity = "1";
           _panel.title.style.background = "orange";
           _panel.title.style.opacity = "1";
-          _panel.closer.style.opacity = "1";
+          
 
           var div = document.createElement('div');
           div.style.margin = '5px';
@@ -100,7 +105,7 @@ Autodesk.Sample.Navigator = function (viewer, options) {
 
     createUI();
 
-    //console.log('MyExtension loaded');
+    console.log('MyExtension loaded');
 
     var elementToSelect;
 
@@ -134,10 +139,10 @@ Autodesk.Sample.Navigator = function (viewer, options) {
   _self.unload = function () {
     // ToDo: prepare to unload the extension
 
-   // console.log('MyExtension unloaded');
+    console.log('MyExtension unloaded');
     return true;
   };
- }
+  }
 };
 
 Autodesk.Sample.Navigator.prototype = Object.create(Autodesk.Viewing.Extension.prototype);
