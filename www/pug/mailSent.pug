@@ -1,0 +1,49 @@
+doctype html
+html(lang='en')
+	head
+		title  #{itemName}
+		meta(charset='utf-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1')
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+		link(rel='stylesheet', href='/../css/main.css')
+		link(rel='shortcut icon', href='/../img/favicon.ico', type='image/x-icon')
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+	body
+		div(class='container-fluid')
+			hr
+			hr
+			div(class='row')
+				div(class='col-sm-4')
+				div(class='col-sm-4')
+					p   #[h3    Mail Sent]
+				div(class='col-sm-4 hidden-sm hidden-xs')
+					img(src='/../img/icon.png', height='100', class='iconimg hidden-sm hidden-xs')
+			
+			div(class='row')
+				div(class='col-sm-4')
+				div(class='col-sm-5')
+					p   #[i(class='fa fa-user iconimg fa-1x', aria-hidden='true')] #{receiverName} would help you...
+				div(class='col-sm-3')
+			
+			div(class='row')
+				div(class='col-sm-4')
+				div(class='panel-group col-sm-4')
+					div(class='panel panel-default')
+						div(class='panel panel-heading')
+							p #[i(class='fa fa-book fa-2x col-sm-2', aria-hidden='true')]
+								a(class='btn btn-refresh btn-white')  #[b #{itemName}]
+						div(class='panel panel-body')
+							ul
+								li
+									div(class='row')
+										div(class='btn-group col-sm-3')
+											a(class='btn btn-basic')     #[i(class='fa fa-smile-o fa-1x', aria-hidden='true')]	Thank you											
+										div(class='btn-group col-sm-3')
+											a(class='btn btn-basic') #{senderName}
+								li
+									div(class='row')
+										div(class='btn-group col-sm-3')
+											a(class='btn btn-basic')     #[i(class='fa fa-hand-peace-o fa-1x', aria-hidden='true')]	Wish you all luck. Bye ...
+				div(class='col-sm-4')
