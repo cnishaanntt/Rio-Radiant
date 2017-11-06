@@ -20,7 +20,12 @@
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var path = require('path');
 var app = express();
+
+
+ app.set('view engine', 'pug'); 
+ app.set('views', path.join(__dirname, '../www/pug'));
 
 // this session will be used to save the oAuth token
 app.use(cookieParser());
@@ -30,7 +35,7 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: (process.env.NODE_ENV === 'production'),
-    maxAge: 1000 * 60 * 60 // 1 hours to expire the session and avoid memory leak
+    maxAge: 1000 * 60 * 60 * 24 * 31// 1 hours to expire the session and avoid memory leak
   },
   resave: false,
   saveUninitialized: true
