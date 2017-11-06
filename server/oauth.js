@@ -2,6 +2,8 @@
 
 // token handling in session
 var token = require('./token');
+var userDetails =require('./user.details');
+
 
 // web framework
 var express = require('express');
@@ -55,6 +57,22 @@ router.get('/user/profile', function (req, res) {
     }
 
     var json = JSON.parse(body);
+	  
+	var userToDb = new userDetails({
+	  userId: json.userId,
+	  userName:json.userName,
+	  emailId: json.emailId,
+	  firstName: json.firstName,
+	  lastName: json.lastName,  
+	  countryCode: json.countryCode,
+	  language: json.language,
+	  profilePic40: json.profileImages.sizeX40
+	})
+	//save user Details
+			userToDb.save(function(err, next) {
+			  if (err) return true;
+			}); 
+	
     var profile = {
       'name': json.firstName + ' ' + json.lastName,
       'picture': json.profileImages.sizeX20
@@ -125,11 +143,11 @@ router.get('/api/forge/callback/oauth', function (req, res) {
 
 function respondWithError(res, error) {
   if (error.statusCode) {
-    //res.status(error.statusCode).end(error.statusMessage);
-    res.redirect('/');
+    //res.redirect('/');
+    res.status(error.statusCode).end(error.statusMessage);
   } else {
-    //res.status(500).end(error.message);
-    res.redirect('/');
+    //res.redirect('/');
+    res.status(500).end(error.message);
   }
 }
 
