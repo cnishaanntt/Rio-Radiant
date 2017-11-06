@@ -34,10 +34,14 @@ doce.get('/',  function (req, res, err) {
        //data = JSON.stringify(data);
        //data.replace(/\\"/g,"\uFFFF"); //U+ FFFF
        //data = data.replace(/\"([^"]+)\":/g,"$1:").replace(/\uFFFF/g,"\\\"");
-	   if(data.createdUser!='' && data.createdUser!= undefined){
-       		res.render('document', {createdUser: data.createdUser, modifiedUser:data.modifiedUser, modifiedAt:data.modifiedAt, itemName:data.itemName, update:data.update, designId:data.designId, itemId:data.itemId, projectId:data.projectId, currentVersion:data.currentVersion, latestVersion:data.latestVersion});
-	   } else {
-		   res.render('askAccess', {json:data})
+	   if(data == undefined){
+       		res.render('document', {update:'You are not supposed to trick QR scanner :)'});
+	   } else  {
+		   if(data.createdUser!='' && data.createdUser!= undefined){
+			res.render('document', {createdUser: data.createdUser, modifiedUser:data.modifiedUser, modifiedAt:data.modifiedAt, itemName:data.itemName, update:data.update, designId:data.designId, itemId:data.itemId, projectId:data.projectId, currentVersion:data.currentVersion, latestVersion:data.latestVersion});
+		   } else {
+			   res.render('askAccess', {json:data})
+		   }
 	   }
     } 
     dm.studious(tokenSession, req.query.itemId, req.query.projectId, req.query.version, versionCallback, res);   
