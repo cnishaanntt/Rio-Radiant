@@ -30,7 +30,8 @@ QRButtonExtension.prototype.load = function () {
     };
     toolbarPrintButton.addClass('QRcodePrintButton');
     toolbarPrintButton.setToolTip('Print Preview');
-        
+     
+    
     var toolbarNextButton = new Autodesk.Viewing.UI.Button('toolbar-NextTool');
     toolbarNextButton.onClick = function (e) {
       loadNextModel();
@@ -38,12 +39,14 @@ QRButtonExtension.prototype.load = function () {
     toolbarNextButton.addClass('NextButton');
     toolbarNextButton.setToolTip('Next');
     
+      
     var toolbarUserButton = new Autodesk.Viewing.UI.Button('toolbar-UserTool');
     toolbarUserButton.onClick = function (e) {
       getUsers();
     };
-    toolbarUserButton.addClass('UserListButton');
+    toolbarUserButton.addClass('UserButton');
     toolbarUserButton.setToolTip('List');
+      
       
     var toolbarShowButton = new Autodesk.Viewing.UI.Button('toolbar-QRShowTool');
     toolbarShowButton.onClick = function (e) {
@@ -54,13 +57,14 @@ QRButtonExtension.prototype.load = function () {
 
     // Grouping Button
     this.subToolbar = new Autodesk.Viewing.UI.ControlGroup('qrTools');
-    this.subToolbar.addControl(toolbarUserButton);
     this.subToolbar.addControl(toolbarPrintButton);
     this.subToolbar.addControl(toolbarShowButton);
+    allViewables = viewerApp.bubble.search({'type': 'geometry'});
     viewables = viewerApp.bubble.search({'type': 'geometry', 'role': '2d'});
-    if(viewables!=null) {
-      this.subToolbar.addControl(toolbarNextButton);
+    if(viewables!=null && allViewables.length > 1) {
+    this.subToolbar.addControl(toolbarNextButton);
     }
+    this.subToolbar.addControl(toolbarUserButton);
 
     _viewer.toolbar.addControl(this.subToolbar);
   };
@@ -72,9 +76,9 @@ QRButtonExtension.prototype.load = function () {
 
 QRButtonExtension.prototype.unload = function () {
   //alert('QRButtonExtension is now unloaded!');
-  $('#qrDocument').remove();
-  $('#qrImage').remove();
-  $('#resizer').remove();
+    $('#qrDocument').remove();
+    $('#qrImage').remove();
+    $('#resizer').remove();
   return true;
 };
 
