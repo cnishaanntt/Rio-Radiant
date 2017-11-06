@@ -17,7 +17,9 @@
     "qr-image": "3.2.0",
     "moment-timezone": "0.5.13",
     "mongoose": "4.12.3",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "nodemailer": "*",
+    "nodemailer-smtp-transport": "*"
   },
   "repository": {
     "type": "git",
